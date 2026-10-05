@@ -39,7 +39,7 @@ fun GoalsScreen(viewModel: FinanceViewModel) {
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         item {
-            Text("Metas de ahorro", style = MaterialTheme.typography.headlineMedium)
+            Text("Mis metas de ahorro", style = MaterialTheme.typography.headlineMedium)
             Text(
                 "Convierte un objetivo grande en avances pequeños y visibles.",
                 style = MaterialTheme.typography.bodyLarge,

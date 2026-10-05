@@ -75,10 +75,17 @@ fun HomeScreen(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Column {
-                    Text("Hola, ${state.userName}", style = MaterialTheme.typography.headlineMedium)
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(4.dp)
+                ) {
                     Text(
-                        "Así se ve tu plata hoy",
+                        text = "Hola, ${state.userName}",
+                        style = MaterialTheme.typography.headlineMedium,
+                        color = MaterialTheme.colorScheme.primary
+                    )
+
+                    Text(
+                        text = "Así se ve tu plata hoy",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
@@ -179,7 +186,7 @@ fun HomeScreen(
         }
 
         item {
-            SectionTitle("Acciones rápidas", "Lo más usado, a un toque")
+            SectionTitle("Acciones rápidas", "Tus accesos más usados, a un toque")
             Spacer(Modifier.height(10.dp))
             Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
                 QuickAction("Transferir", Icons.Rounded.Send, Modifier.weight(1f)) {}

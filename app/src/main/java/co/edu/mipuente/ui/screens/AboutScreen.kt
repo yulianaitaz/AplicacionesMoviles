@@ -11,7 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.ArrowBack
 import androidx.compose.material.icons.rounded.CloudSync
 import androidx.compose.material.icons.rounded.Code
-import androidx.compose.material.icons.rounded.Database
+import androidx.compose.material.icons.rounded.Storage
 import androidx.compose.material.icons.rounded.Groups
 import androidx.compose.material.icons.rounded.Route
 import androidx.compose.material3.Card
@@ -73,14 +73,18 @@ fun AboutScreen(onBack: () -> Unit) {
 
         item { InfoCard("Jetpack Compose + Material 3", "Interfaz declarativa, consistente y adaptable.", Icons.Rounded.Code) }
         item { InfoCard("ViewModel", "Conserva y coordina el estado observable de la interfaz.", Icons.Rounded.Groups) }
-        item { InfoCard("SQLite local", "Movimientos, metas, balances y preferencias persisten en el dispositivo.", Icons.Rounded.Database) }
+        item { InfoCard("SQLite local", "Movimientos, metas, balances y preferencias persisten en el dispositivo.", Icons.Rounded.Storage) }
         item { InfoCard("Navigation Component", "NavHost y NavController conectan las distintas pantallas.", Icons.Rounded.Route) }
         item { InfoCard("Servicio en línea", "Consulta HTTP de una tasa USD/COP de referencia.", Icons.Rounded.CloudSync) }
 
         item {
-            Text("Créditos", style = MaterialTheme.typography.titleLarge)
             Text(
-                "Integrantes del microproyecto",
+                text = "Equipo de desarrollo",
+                style = MaterialTheme.typography.titleLarge,
+                color = MaterialTheme.colorScheme.primary
+            )
+            Text(
+                "Desarrollado por los integrantes del microproyecto",
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
