@@ -47,7 +47,7 @@ fun ProfileScreen(
         verticalArrangement = Arrangement.spacedBy(14.dp)
     ) {
         item {
-            Text("Perfil", style = MaterialTheme.typography.headlineMedium)
+            Text("Mi perfil", style = MaterialTheme.typography.headlineMedium)
             Text(
                 "Tu cuenta y las preferencias de Mi Puente Financiero.",
                 style = MaterialTheme.typography.bodyLarge,
