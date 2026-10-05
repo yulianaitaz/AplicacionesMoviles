@@ -1,0 +1,23 @@
+@startuml
+skinparam componentStyle rectangle
+skinparam shadowing false
+
+device "Teléfono Android / Emulador" as phone {
+  component "UI\nJetpack Compose + Material 3" as ui
+  component "Navigation Component\nNavHost + NavController" as nav
+  component "FinanceViewModel\nStateFlow" as vm
+  component "FinanceRepository" as repo
+  database "SQLite local\nmovements / goals / settings" as db
+
+  ui --> nav
+  ui --> vm : eventos / estado
+  vm --> repo : persistencia
+  repo --> db
+}
+
+cloud "Internet" as net
+component "Servicio público HTTP\nUSD/COP" as api
+
+vm --> net : HTTPS GET
+net --> api
+@enduml
