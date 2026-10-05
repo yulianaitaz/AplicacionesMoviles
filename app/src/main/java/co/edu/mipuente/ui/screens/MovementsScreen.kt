@@ -84,7 +84,7 @@ fun MovementsScreen(viewModel: FinanceViewModel) {
         verticalArrangement = Arrangement.spacedBy(12.dp)
     ) {
         item {
-            Text("Movimientos", style = MaterialTheme.typography.headlineMedium)
+            Text("Movimientos recientes", style = MaterialTheme.typography.headlineMedium)
             Text(
                 "Busca, filtra y revisa en qué se está moviendo tu plata.",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
