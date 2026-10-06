@@ -1,4 +1,4 @@
-package co.edu.mipuente.ui.screens
+﻿package co.edu.mipuente.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -18,6 +18,8 @@ import androidx.compose.material.icons.rounded.Lock
 import androidx.compose.material.icons.rounded.Notifications
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Security
+import androidx.compose.material.icons.rounded.Storage
+import androidx.compose.material.icons.rounded.Sync
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -58,11 +60,15 @@ fun ProfileScreen(
         item {
             Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(24.dp)) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(20.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(20.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Box(
-                        modifier = Modifier.size(64.dp).clip(CircleShape),
+                        modifier = Modifier
+                            .size(64.dp)
+                            .clip(CircleShape),
                         contentAlignment = Alignment.Center
                     ) {
                         Icon(
@@ -92,7 +98,9 @@ fun ProfileScreen(
         item {
             Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(22.dp)) {
                 Row(
-                    modifier = Modifier.fillMaxWidth().padding(18.dp),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(18.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     Icon(Icons.Rounded.Notifications, contentDescription = null, tint = MaterialTheme.colorScheme.primary)
@@ -112,6 +120,16 @@ fun ProfileScreen(
             }
         }
 
+        item {
+            InfoCard(
+                title = "Reconciliar saldos SQLite",
+                subtitle = "Verifica y recalcula la integridad de saldos desde el historial",
+                icon = Icons.Rounded.Sync,
+                onClick = viewModel::recalculateBalances
+            )
+        }
+
+        item { InfoCard("Persistencia local", "Base de datos SQLite activa (v2)", Icons.Rounded.Storage) }
         item { InfoCard("Seguridad", "Protege tu información financiera", Icons.Rounded.Security) }
         item { InfoCard("Privacidad", "Controla qué datos guarda la app", Icons.Rounded.Lock) }
         item { InfoCard("Mis cuentas", "Personal y negocio en un mismo lugar", Icons.Rounded.AccountBalanceWallet) }
