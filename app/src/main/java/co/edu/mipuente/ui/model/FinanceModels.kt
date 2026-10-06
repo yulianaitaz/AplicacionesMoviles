@@ -31,6 +31,13 @@ data class SavingsGoal(
         get() = if (target <= 0L) 0f else (saved.toFloat() / target.toFloat()).coerceIn(0f, 1f)
 }
 
+sealed interface ExchangeRateState {
+    data object Idle : ExchangeRateState
+    data object Loading : ExchangeRateState
+    data class Success(val rate: Double) : ExchangeRateState
+    data class Error(val message: String) : ExchangeRateState
+}
+
 data class FinanceUiState(
     val userName: String = "Alejandra",
     val selectedAccount: AccountType = AccountType.PERSONAL,
@@ -43,9 +50,7 @@ data class FinanceUiState(
     val movements: List<Movement> = emptyList(),
     val goals: List<SavingsGoal> = emptyList(),
     val notificationsEnabled: Boolean = true,
-    val usdCopRate: Double? = null,
-    val exchangeRateLoading: Boolean = false,
-    val exchangeRateMessage: String = "Toca actualizar para consultar la tasa en línea.",
+    val exchangeRate: ExchangeRateState = ExchangeRateState.Idle,
     val localDatabaseReady: Boolean = false
 ) {
     val activeBalance: Long
