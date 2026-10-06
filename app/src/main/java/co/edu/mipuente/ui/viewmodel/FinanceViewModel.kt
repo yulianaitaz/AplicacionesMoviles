@@ -159,7 +159,7 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
     if (_uiState.value.exchangeRate is ExchangeRateState.Loading) return
     _uiState.update { it.copy(exchangeRate = ExchangeRateState.Loading) }
     viewModelScope.launch {
-        runCatching { withContext(Dispatchers.IO) { ExchangeRateService.fetchUsdCop() } }
+        runCatching {ExchangeRateService.fetchUsdCop() }
             .onSuccess { rate ->
                 _uiState.update { it.copy(exchangeRate = ExchangeRateState.Success(rate)) }
             }
