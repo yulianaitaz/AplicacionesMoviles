@@ -17,6 +17,7 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
+import co.edu.mipuente.ui.model.ExchangeRateState
 
 class FinanceViewModel(application: Application) : AndroidViewModel(application) {
 
@@ -155,29 +156,21 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun refreshExchangeRate() {
-        if (_uiState.value.exchangeRateLoading) return
-        _uiState.update {
-            it.copy(exchangeRateLoading = true, exchangeRateMessage = "Consultando servicio en línea…")
-        }
-        viewModelScope.launch {
-            runCatching { withContext(Dispatchers.IO) { ExchangeRateService.fetchUsdCop() } }
-                .onSuccess { rate ->
-                    _uiState.update {
-                        it.copy(
-                            usdCopRate = rate,
-                            exchangeRateLoading = false,
-                            exchangeRateMessage = "Actualizado desde un servicio HTTP público."
+    if (_uiState.value.exchangeRate is ExchangeRateState.Loading) return
+    _uiState.update { it.copy(exchangeRate = ExchangeRateState.Loading) }
+    viewModelScope.launch {
+        runCatching { withContext(Dispatchers.IO) { ExchangeRateService.fetchUsdCop() } }
+            .onSuccess { rate ->
+                _uiState.update { it.copy(exchangeRate = ExchangeRateState.Success(rate)) }
+            }
+            .onFailure {
+                _uiState.update {
+                    it.copy(
+                        exchangeRate = ExchangeRateState.Error(
+                            "No fue posible actualizar. Verifica la conexión a Internet."
                         )
-                    }
+                    )
                 }
-                .onFailure {
-                    _uiState.update {
-                        it.copy(
-                            exchangeRateLoading = false,
-                            exchangeRateMessage = "No fue posible actualizar. Verifica la conexión a Internet."
-                        )
-                    }
-                }
-        }
+            }
     }
 }
