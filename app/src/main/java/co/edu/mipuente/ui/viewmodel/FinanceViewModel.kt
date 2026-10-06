@@ -175,6 +175,7 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
         }
     }
 
+    
     override fun onCleared() {
         executor.shutdownNow()
         super.onCleared()
