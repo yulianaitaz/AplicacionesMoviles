@@ -1,9 +1,8 @@
-package co.edu.mipuente.ui.screens
+﻿package co.edu.mipuente.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -45,7 +44,7 @@ fun AddMovementScreen(
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val amount = state.amountDraft.toLongOrNull() ?: 0L
-    val categories = listOf("Comida", "Transporte", "Súper", "Vivienda", "Servicios", "Trabajo", "Otro")
+    val categories = listOf("Comida", "Transporte", "Súper", "Vivienda", "Servicios", "Trabajo", "Negocio", "Otro")
 
     LazyColumn(
         modifier = Modifier.fillMaxWidth(),
@@ -55,7 +54,7 @@ fun AddMovementScreen(
         item {
             Text("Registrar movimiento", style = MaterialTheme.typography.headlineMedium)
             Text(
-                "Anota lo que entró o salió sin llenar formularios largos.",
+                "Anota lo que entró o salió con persistencia inmediata en la base de datos local.",
                 style = MaterialTheme.typography.bodyLarge,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
@@ -108,7 +107,7 @@ fun AddMovementScreen(
                 onValueChange = viewModel::updateNote,
                 modifier = Modifier.fillMaxWidth(),
                 label = { Text("Descripción opcional") },
-                placeholder = { Text("Ej. Pizza con amigos") },
+                placeholder = { Text("Ej. Compra supermercado, Pago nómina") },
                 singleLine = true,
                 shape = RoundedCornerShape(18.dp)
             )
@@ -130,7 +129,7 @@ fun AddMovementScreen(
                     shape = RoundedCornerShape(20.dp)
                 ) {
                     Icon(Icons.Rounded.ArrowUpward, contentDescription = null)
-                    Text("Entró plata", modifier = Modifier.padding(start = 8.dp))
+                    Text("Entró plata", modifier = Modifier.padding(start = 8.dp), fontWeight = FontWeight.Bold)
                 }
                 Button(
                     onClick = {
@@ -142,7 +141,7 @@ fun AddMovementScreen(
                     shape = RoundedCornerShape(20.dp)
                 ) {
                     Icon(Icons.Rounded.ArrowDownward, contentDescription = null)
-                    Text("Salió plata", modifier = Modifier.padding(start = 8.dp))
+                    Text("Salió plata", modifier = Modifier.padding(start = 8.dp), fontWeight = FontWeight.Bold)
                 }
             }
         }
