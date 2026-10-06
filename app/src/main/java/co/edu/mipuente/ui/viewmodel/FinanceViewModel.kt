@@ -2,43 +2,59 @@ package co.edu.mipuente.ui.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import co.edu.mipuente.data.FinanceRepository
 import co.edu.mipuente.data.remote.ExchangeRateService
 import co.edu.mipuente.ui.model.AccountType
 import co.edu.mipuente.ui.model.FinanceUiState
+import co.edu.mipuente.ui.model.Movement
 import co.edu.mipuente.ui.model.MovementType
+import co.edu.mipuente.ui.model.SavingsGoal
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.concurrent.Executors
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 
 class FinanceViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FinanceRepository(application)
-    private val executor = Executors.newSingleThreadExecutor()
 
     private val _uiState = MutableStateFlow(FinanceUiState())
     val uiState: StateFlow<FinanceUiState> = _uiState.asStateFlow()
+
+    private class LocalSnapshot(
+        val movements: List<Movement>,
+        val goals: List<SavingsGoal>,
+        val personal: Long,
+        val business: Long,
+        val notifications: Boolean
+    )
 
     init {
         loadLocalData()
     }
 
     private fun loadLocalData() {
-        executor.execute {
-            val movements = repository.getMovements()
-            val goals = repository.getGoals()
-            val personal = repository.getPersonalBalance()
-            val business = repository.getBusinessBalance()
-            val notifications = repository.notificationsEnabled()
+        viewModelScope.launch {
+            val data = withContext(Dispatchers.IO) {
+                LocalSnapshot(
+                    movements = repository.getMovements(),
+                    goals = repository.getGoals(),
+                    personal = repository.getPersonalBalance(),
+                    business = repository.getBusinessBalance(),
+                    notifications = repository.notificationsEnabled()
+                )
+            }
             _uiState.update {
                 it.copy(
-                    movements = movements,
-                    goals = goals,
-                    personalBalance = personal,
-                    businessBalance = business,
-                    notificationsEnabled = notifications,
+                    movements = data.movements,
+                    goals = data.goals,
+                    personalBalance = data.personal,
+                    businessBalance = data.business,
+                    notificationsEnabled = data.notifications,
                     localDatabaseReady = true
                 )
             }
@@ -93,15 +109,13 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
                 else -> snapshot.categoryDraft
             }
         }
-        val account = snapshot.selectedAccount
 
-        // Para el microproyecto la escritura es pequeña; se refleja en UI y se persiste inmediatamente.
         val movement = repository.insertMovement(
             title = title,
             category = snapshot.categoryDraft,
             amount = amount,
             type = type,
-            account = account,
+            account = snapshot.selectedAccount,
             dateLabel = "Ahora"
         )
 
@@ -130,11 +144,7 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
     }
 
     fun addDemoGoal() {
-        val goal = repository.insertGoal(
-            name = "Nueva meta",
-            target = 1_000_000,
-            emoji = "🎯"
-        )
+        val goal = repository.insertGoal(name = "Nueva meta", target = 1_000_000, emoji = "🎯")
         _uiState.update { it.copy(goals = it.goals + goal) }
     }
 
@@ -147,14 +157,10 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
     fun refreshExchangeRate() {
         if (_uiState.value.exchangeRateLoading) return
         _uiState.update {
-            it.copy(
-                exchangeRateLoading = true,
-                exchangeRateMessage = "Consultando servicio en línea…"
-            )
+            it.copy(exchangeRateLoading = true, exchangeRateMessage = "Consultando servicio en línea…")
         }
-
-        executor.execute {
-            runCatching { ExchangeRateService.fetchUsdCop() }
+        viewModelScope.launch {
+            runCatching { withContext(Dispatchers.IO) { ExchangeRateService.fetchUsdCop() } }
                 .onSuccess { rate ->
                     _uiState.update {
                         it.copy(
@@ -173,11 +179,5 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
                     }
                 }
         }
-    }
-
-    
-    override fun onCleared() {
-        executor.shutdownNow()
-        super.onCleared()
     }
 }
