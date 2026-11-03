@@ -1,4 +1,4 @@
-package co.edu.mipuente.ui.screens
+﻿package co.edu.mipuente.ui.screens
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -57,9 +57,10 @@ import java.util.Locale
 @Composable
 fun HomeScreen(
     viewModel: FinanceViewModel,
-    onAddClick: () -> Unit,
     onMovementsClick: () -> Unit,
-    onGoalsClick: () -> Unit
+    onAddClick: () -> Unit,
+    onGoalsClick: () -> Unit,
+    onProfileClick: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsStateWithLifecycle()
     val mainGoal = state.goals.firstOrNull()
@@ -72,47 +73,42 @@ fun HomeScreen(
         item {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(4.dp)
-                ) {
+                Column {
                     Text(
-                        text = "Hola, ${state.userName}",
+                        "Hola, ${state.userName}",
                         style = MaterialTheme.typography.headlineMedium,
-                        color = MaterialTheme.colorScheme.primary
+                        fontWeight = FontWeight.Bold
                     )
-
                     Text(
-                        text = "Así se ve tu plata hoy",
+                        "Bienvenido a Mi Puente Financiero",
                         style = MaterialTheme.typography.bodyLarge,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
                 }
                 Box(
-                    Modifier
-                        .size(48.dp)
-                        .background(MaterialTheme.colorScheme.primaryContainer, CircleShape),
+                    modifier = Modifier
+                        .size(46.dp)
+                        .background(MaterialTheme.colorScheme.primaryContainer, CircleShape)
+                        .clickable(onClick = onProfileClick),
                     contentAlignment = Alignment.Center
                 ) {
-                    Text(state.userName.take(1), style = MaterialTheme.typography.titleLarge)
+                    Text("A", style = MaterialTheme.typography.titleLarge, fontWeight = FontWeight.Bold, color = MaterialTheme.colorScheme.primary)
                 }
             }
         }
 
         item {
-            AccountSelector(
-                selected = state.selectedAccount,
-                onSelected = viewModel::selectAccount
-            )
+            AccountSelector(state.selectedAccount, viewModel::selectAccount)
         }
 
         item {
             Card(
                 modifier = Modifier.fillMaxWidth(),
-                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-                shape = RoundedCornerShape(28.dp)
+                shape = RoundedCornerShape(28.dp),
+                colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
             ) {
                 Column(Modifier.padding(22.dp)) {
                     Row(
@@ -120,22 +116,26 @@ fun HomeScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text("Saldo total", style = MaterialTheme.typography.titleMedium)
+                        Text(
+                            "Saldo ${state.selectedAccount.label}",
+                            style = MaterialTheme.typography.titleMedium,
+                            color = MaterialTheme.colorScheme.onPrimaryContainer
+                        )
                         FilledTonalIconButton(onClick = viewModel::toggleBalanceVisibility) {
                             Icon(
-                                if (state.isBalanceVisible) Icons.Rounded.Visibility else Icons.Rounded.VisibilityOff,
-                                contentDescription = "Mostrar u ocultar saldo"
+                                if (state.isBalanceVisible) Icons.Rounded.VisibilityOff else Icons.Rounded.Visibility,
+                                contentDescription = "Ocultar o mostrar saldo"
                             )
                         }
                     }
                     Text(
-                        text = if (state.isBalanceVisible) formatCop(state.activeBalance) else "••••••••",
+                        if (state.isBalanceVisible) formatCop(state.activeBalance) else "••••••••",
                         style = MaterialTheme.typography.displaySmall,
                         fontWeight = FontWeight.Bold,
                         modifier = Modifier.padding(top = 6.dp)
                     )
                     Text(
-                        if (state.localDatabaseReady) "Datos guardados localmente" else "Cargando datos locales…",
+                        if (state.localDatabaseReady) "Datos guardados localmente (SQLite)" else "Cargando datos locales...",
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onPrimaryContainer.copy(alpha = 0.75f),
                         modifier = Modifier.padding(top = 8.dp)
@@ -147,7 +147,9 @@ fun HomeScreen(
         if (mainGoal != null) {
             item {
                 Card(
-                    modifier = Modifier.fillMaxWidth().clickable(onClick = onGoalsClick),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clickable(onClick = onGoalsClick),
                     shape = RoundedCornerShape(24.dp)
                 ) {
                     Column(Modifier.padding(20.dp)) {
@@ -156,12 +158,15 @@ fun HomeScreen(
                             horizontalArrangement = Arrangement.SpaceBetween,
                             verticalAlignment = Alignment.CenterVertically
                         ) {
-                            SectionTitle("Meta de ahorro", mainGoal.name)
-                            Text("${(mainGoal.progress * 100).toInt()}%", style = MaterialTheme.typography.titleMedium)
+                            SectionTitle("Meta de ahorro", "${mainGoal.emoji} ${mainGoal.name}")
+                            Text("${(mainGoal.progress * 100).toInt()}%", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
                         }
                         LinearProgressIndicator(
                             progress = { mainGoal.progress },
-                            modifier = Modifier.fillMaxWidth().padding(top = 14.dp).height(10.dp),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 14.dp)
+                                .height(10.dp),
                             color = MaterialTheme.colorScheme.tertiary,
                             trackColor = MaterialTheme.colorScheme.surfaceVariant
                         )
@@ -235,18 +240,22 @@ private fun OnlineRateCard(
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondaryContainer)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(18.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(18.dp),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(14.dp)
         ) {
             Box(
-                Modifier.size(48.dp).background(MaterialTheme.colorScheme.surface, CircleShape),
+                Modifier
+                    .size(48.dp)
+                    .background(MaterialTheme.colorScheme.surface, CircleShape),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(Icons.Rounded.CurrencyExchange, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
             }
             Column(Modifier.weight(1f)) {
-                Text("Servicio en línea · USD/COP", style = MaterialTheme.typography.titleMedium)
+                Text("Servicio en línea • USD/COP", style = MaterialTheme.typography.titleMedium)
                 Text(
                     if (rate != null) "1 USD ≈ ${formatter.format(rate)} COP" else "Tasa aún no consultada",
                     style = MaterialTheme.typography.titleLarge,
@@ -283,7 +292,9 @@ private fun QuickAction(
             horizontalArrangement = Arrangement.spacedBy(10.dp)
         ) {
             Box(
-                Modifier.size(40.dp).background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(12.dp)),
+                Modifier
+                    .size(40.dp)
+                    .background(MaterialTheme.colorScheme.secondaryContainer, RoundedCornerShape(12.dp)),
                 contentAlignment = Alignment.Center
             ) {
                 Icon(icon, contentDescription = null, tint = MaterialTheme.colorScheme.secondary)
@@ -298,19 +309,21 @@ private fun CompactMovementRow(movement: Movement) {
     val amountColor: Color = if (movement.type == MovementType.INCOME) IncomeGreen else ExpenseCoral
     Card(modifier = Modifier.fillMaxWidth(), shape = RoundedCornerShape(18.dp)) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(16.dp),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(Modifier.weight(1f)) {
                 Text(movement.title, style = MaterialTheme.typography.titleMedium, maxLines = 1, overflow = TextOverflow.Ellipsis)
                 Text(
-                    "${movement.category} · ${movement.dateLabel}",
+                    "${movement.category} • ${movement.dateLabel}",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant
                 )
             }
             Text(
-                (if (movement.type == MovementType.INCOME) "+ " else "− ") + formatCop(movement.amount),
+                (if (movement.type == MovementType.INCOME) "+ " else "- ") + formatCop(movement.amount),
                 style = MaterialTheme.typography.titleMedium,
                 color = amountColor,
                 fontWeight = FontWeight.Bold

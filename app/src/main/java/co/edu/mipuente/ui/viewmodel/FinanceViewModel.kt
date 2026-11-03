@@ -1,4 +1,4 @@
-package co.edu.mipuente.ui.viewmodel
+﻿package co.edu.mipuente.ui.viewmodel
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
@@ -25,7 +25,7 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
         loadLocalData()
     }
 
-    private fun loadLocalData() {
+    fun loadLocalData() {
         executor.execute {
             val movements = repository.getMovements()
             val goals = repository.getGoals()
@@ -57,9 +57,11 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
         _uiState.update { state ->
             val current = state.amountDraft
             val updated = when (key) {
-                "⌫" -> current.dropLast(1)
+                "⌫", "DEL", "backspace" -> current.dropLast(1)
                 "C" -> ""
-                else -> if (current.length < 9) (current + key).trimStart('0').ifBlank { "0" } else current
+                else -> if (current.length < 9 && key.all { it.isDigit() }) {
+                    (current + key).trimStart('0').ifBlank { "0" }
+                } else current
             }
             state.copy(amountDraft = updated)
         }
@@ -76,6 +78,14 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
     fun updateNote(note: String) {
         _uiState.update { it.copy(noteDraft = note) }
     }
+
+    fun clearStatusMessage() {
+        _uiState.update { it.copy(statusMessage = null) }
+    }
+
+    // ==========================================
+    // MOVIMIENTOS (CRUD)
+    // ==========================================
 
     fun addMovement(type: MovementType): Boolean {
         val snapshot = _uiState.value
@@ -95,53 +105,183 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
         }
         val account = snapshot.selectedAccount
 
-        // Para el microproyecto la escritura es pequeña; se refleja en UI y se persiste inmediatamente.
-        val movement = repository.insertMovement(
-            title = title,
-            category = snapshot.categoryDraft,
-            amount = amount,
-            type = type,
-            account = account,
-            dateLabel = "Ahora"
-        )
-
-        _uiState.update { state ->
-            state.copy(
-                personalBalance = repository.getPersonalBalance(),
-                businessBalance = repository.getBusinessBalance(),
-                movements = listOf(movement) + state.movements,
-                amountDraft = "",
-                noteDraft = ""
+        executor.execute {
+            val movement = repository.insertMovement(
+                title = title,
+                category = snapshot.categoryDraft,
+                amount = amount,
+                type = type,
+                account = account,
+                dateLabel = "Ahora"
             )
+            val personal = repository.getPersonalBalance()
+            val business = repository.getBusinessBalance()
+            val allMovements = repository.getMovements()
+
+            _uiState.update { state ->
+                state.copy(
+                    personalBalance = personal,
+                    businessBalance = business,
+                    movements = allMovements,
+                    amountDraft = "",
+                    noteDraft = "",
+                    statusMessage = "Movimiento registrado con éxito."
+                )
+            }
+        }
+        return true
+    }
+
+    fun updateMovement(
+        id: Long,
+        title: String,
+        category: String,
+        amount: Long,
+        type: MovementType,
+        account: AccountType
+    ): Boolean {
+        if (amount <= 0L || title.isBlank()) return false
+        executor.execute {
+            val success = repository.updateMovement(
+                id = id,
+                title = title,
+                category = category,
+                amount = amount,
+                type = type,
+                account = account
+            )
+            if (success) {
+                val personal = repository.getPersonalBalance()
+                val business = repository.getBusinessBalance()
+                val allMovements = repository.getMovements()
+                _uiState.update { state ->
+                    state.copy(
+                        personalBalance = personal,
+                        businessBalance = business,
+                        movements = allMovements,
+                        statusMessage = "Movimiento actualizado."
+                    )
+                }
+            }
         }
         return true
     }
 
     fun deleteMovement(id: Long) {
-        val movement = _uiState.value.movements.firstOrNull { it.id == id } ?: return
-        repository.deleteMovement(movement)
-        _uiState.update { state ->
-            state.copy(
-                personalBalance = repository.getPersonalBalance(),
-                businessBalance = repository.getBusinessBalance(),
-                movements = state.movements.filterNot { it.id == id }
+        executor.execute {
+            val success = repository.deleteMovement(id)
+            if (success) {
+                val personal = repository.getPersonalBalance()
+                val business = repository.getBusinessBalance()
+                val allMovements = repository.getMovements()
+                _uiState.update { state ->
+                    state.copy(
+                        personalBalance = personal,
+                        businessBalance = business,
+                        movements = allMovements,
+                        statusMessage = "Movimiento eliminado."
+                    )
+                }
+            }
+        }
+    }
+
+    // ==========================================
+    // METAS DE AHORRO (CRUD)
+    // ==========================================
+
+    fun addGoal(name: String, target: Long, emoji: String, initialSaved: Long = 0L): Boolean {
+        if (name.isBlank() || target <= 0L) return false
+        executor.execute {
+            val goal = repository.insertGoal(
+                name = name.trim(),
+                target = target,
+                emoji = emoji.ifBlank { "🎯" },
+                initialSaved = initialSaved.coerceAtLeast(0L)
             )
+            val goals = repository.getGoals()
+            _uiState.update {
+                it.copy(
+                    goals = goals,
+                    statusMessage = "Meta '${goal.name}' creada exitosamente."
+                )
+            }
+        }
+        return true
+    }
+
+    fun updateGoal(id: Long, name: String, target: Long, emoji: String): Boolean {
+        if (name.isBlank() || target <= 0L) return false
+        executor.execute {
+            val success = repository.updateGoal(id, name.trim(), target, emoji.ifBlank { "🎯" })
+            if (success) {
+                val goals = repository.getGoals()
+                _uiState.update {
+                    it.copy(
+                        goals = goals,
+                        statusMessage = "Meta actualizada."
+                    )
+                }
+            }
+        }
+        return true
+    }
+
+    fun contributeToGoal(id: Long, amount: Long): Boolean {
+        if (amount <= 0L) return false
+        executor.execute {
+            val success = repository.contributeToGoal(id, amount)
+            if (success) {
+                val goals = repository.getGoals()
+                _uiState.update {
+                    it.copy(
+                        goals = goals,
+                        statusMessage = "¡Abono registrado a tu meta!"
+                    )
+                }
+            }
+        }
+        return true
+    }
+
+    fun deleteGoal(id: Long) {
+        executor.execute {
+            val success = repository.deleteGoal(id)
+            if (success) {
+                val goals = repository.getGoals()
+                _uiState.update {
+                    it.copy(
+                        goals = goals,
+                        statusMessage = "Meta eliminada."
+                    )
+                }
+            }
         }
     }
 
     fun addDemoGoal() {
-        val goal = repository.insertGoal(
-            name = "Nueva meta",
-            target = 1_000_000,
-            emoji = "🎯"
-        )
-        _uiState.update { it.copy(goals = it.goals + goal) }
+        addGoal("Nueva meta", 1_000_000L, "🎯", 0L)
+    }
+
+    fun recalculateBalances() {
+        executor.execute {
+            val (personal, business) = repository.recalculateBalances()
+            _uiState.update {
+                it.copy(
+                    personalBalance = personal,
+                    businessBalance = business,
+                    statusMessage = "Saldos recalculados e integridad verificada."
+                )
+            }
+        }
     }
 
     fun toggleNotifications() {
         val newValue = !_uiState.value.notificationsEnabled
-        repository.saveNotifications(newValue)
-        _uiState.update { it.copy(notificationsEnabled = newValue) }
+        executor.execute {
+            repository.saveNotifications(newValue)
+            _uiState.update { it.copy(notificationsEnabled = newValue) }
+        }
     }
 
     fun refreshExchangeRate() {
@@ -149,7 +289,7 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
         _uiState.update {
             it.copy(
                 exchangeRateLoading = true,
-                exchangeRateMessage = "Consultando servicio en línea…"
+                exchangeRateMessage = "Consultando servicio en línea..."
             )
         }
 

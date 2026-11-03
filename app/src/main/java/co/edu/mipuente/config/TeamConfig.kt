@@ -1,11 +1,10 @@
-package co.edu.mipuente.config
+﻿package co.edu.mipuente.config
 
 /**
- * Reemplazar estos textos antes de la entrega con los nombres reales de los integrantes.
- * La pantalla de créditos los toma directamente de esta lista.
+ * Lista de integrantes del proyecto Mi Puente Financiero.
  */
 val teamMembers = listOf(
-    "Integrante 1 - REEMPLAZAR",
-    "Integrante 2 - REEMPLAZAR",
-    "Integrante 3 - REEMPLAZAR"
+    "JOSE LUIS SANCHEZ LOPEZ - Persistencia y Base de Datos Local",
+    "Yuliana Itaz - Interfaz y Material 3",
+    "Gabriel Cuellar - Servicio en Línea y Navegación"
 )
