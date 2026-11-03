@@ -1,0 +1,89 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {};
+	objectVersion = 56;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		8AA0BF6BA97D662E17CC0776 /* MiPuenteFinancieroApp.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0D3AA488A7962D533BF8A141 /* MiPuenteFinancieroApp.swift */;};
+		D6D186021F5BF95AF41C4791 /* BrandTheme.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2EA393E0BB11DABD03876C81 /* BrandTheme.swift */;};
+		2C78F707ADFB567307D8F83D /* FinanceModels.swift in Sources */ = {isa = PBXBuildFile; fileRef = 7297E26C5F5EC06D3C091302 /* FinanceModels.swift */;};
+		DAE63874C9B9C97894C1F75A /* FinanceRepository.swift in Sources */ = {isa = PBXBuildFile; fileRef = 2AF10A1ECD28A370818ED645 /* FinanceRepository.swift */;};
+		60FCE0CA759DD810C9BB7717 /* AboutScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = D2602EAC8D17A5BE5F3DB059 /* AboutScreen.swift */;};
+		6ABEFB3F66B412631DBA6DDE /* AddMovementScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 897DA77E797B83556D4888A8 /* AddMovementScreen.swift */;};
+		28C90CB51E279E5BCB1427CF /* GoalsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 02081C4ED41A1B9014D657EA /* GoalsScreen.swift */;};
+		3CCEE6584D0AAC41BD317D8E /* HomeScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 099E0031159C3ABD947D59AE /* HomeScreen.swift */;};
+		FD94C6F0A693AA0757C5837B /* MovementsScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 97E6F997A56D118B29D76BC6 /* MovementsScreen.swift */;};
+		18560F6FF8C29A3007C75231 /* ProfileScreen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 64DEF791914C28D5867526BF /* ProfileScreen.swift */;};
+		84A6C31145DDEE206B1BA6FD /* SplashView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 55FD1AAEB6E0F2531F32C92E /* SplashView.swift */;};
+		A6B354569EB669063D0CD0FA /* ExchangeRateService.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5BB416F83B141102890A70CF /* ExchangeRateService.swift */;};
+		C49FC7AF6D02588C6B7DA312 /* FinanceViewModel.swift in Sources */ = {isa = PBXBuildFile; fileRef = FB2E4B469FC41E12E1912C84 /* FinanceViewModel.swift */;};
+		AB448BACB6278B84EC78240E /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 3DAD4E7F054FAE055A1E5826 /* Assets.xcassets */;};
+/* End PBXBuildFile section */
+
+/* Begin PBXFileReference section */
+		0D3AA488A7962D533BF8A141 /* MiPuenteFinancieroApp.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MiPuenteFinancieroApp.swift"; sourceTree = "<group>";};
+		2EA393E0BB11DABD03876C81 /* BrandTheme.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "BrandTheme.swift"; sourceTree = "<group>";};
+		7297E26C5F5EC06D3C091302 /* FinanceModels.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FinanceModels.swift"; sourceTree = "<group>";};
+		2AF10A1ECD28A370818ED645 /* FinanceRepository.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FinanceRepository.swift"; sourceTree = "<group>";};
+		D2602EAC8D17A5BE5F3DB059 /* AboutScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AboutScreen.swift"; sourceTree = "<group>";};
+		897DA77E797B83556D4888A8 /* AddMovementScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "AddMovementScreen.swift"; sourceTree = "<group>";};
+		02081C4ED41A1B9014D657EA /* GoalsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "GoalsScreen.swift"; sourceTree = "<group>";};
+		099E0031159C3ABD947D59AE /* HomeScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "HomeScreen.swift"; sourceTree = "<group>";};
+		97E6F997A56D118B29D76BC6 /* MovementsScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "MovementsScreen.swift"; sourceTree = "<group>";};
+		64DEF791914C28D5867526BF /* ProfileScreen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ProfileScreen.swift"; sourceTree = "<group>";};
+		55FD1AAEB6E0F2531F32C92E /* SplashView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "SplashView.swift"; sourceTree = "<group>";};
+		5BB416F83B141102890A70CF /* ExchangeRateService.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "ExchangeRateService.swift"; sourceTree = "<group>";};
+		FB2E4B469FC41E12E1912C84 /* FinanceViewModel.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "FinanceViewModel.swift"; sourceTree = "<group>";};
+		3DAD4E7F054FAE055A1E5826 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>";};
+		829E1A1BB4B18EF221D5B15E /* MiPuenteFinanciero.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MiPuenteFinanciero.app; sourceTree = BUILT_PRODUCTS_DIR;};
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		F01580CCB5F725E4E879D491 /* Frameworks */ = {isa = PBXFrameworksBuildPhase; buildActionMask = 2147483647; files = (); runOnlyForDeploymentPostprocessing = 0;};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		BDE88D77EBDC01774960BE71 /* Main Group */ = {isa = PBXGroup; children = (19BD8F4CCB5F81AEBC76951E /* MiPuenteFinanciero */, 4FDE57E4B72FFCEE306CEB0F /* Products */); sourceTree = "<group>";};
+		19BD8F4CCB5F81AEBC76951E /* MiPuenteFinanciero */ = {isa = PBXGroup; children = (A2FF9BC57277E9FA2AA21C75 /* App */, 0EDE0228E9A7D89A61CD77AE /* Models */, D6C89CC9500E98D4C8A8E98E /* Persistence */, A1AF5AD3088A36FFF1D48418 /* Services */, D76A3D17190E01256A526F32 /* ViewModels */, 963E4BF6B41052EB0FA620F3 /* DesignSystem */, 8A4DFE8310ECB3E42F98B095 /* Screens */, 3DAD4E7F054FAE055A1E5826 /* Assets.xcassets */); path = MiPuenteFinanciero; sourceTree = "<group>";};
+		A2FF9BC57277E9FA2AA21C75 /* App */ = {isa = PBXGroup; children = (0D3AA488A7962D533BF8A141 /* MiPuenteFinancieroApp.swift */); path = App; sourceTree = "<group>";};
+		0EDE0228E9A7D89A61CD77AE /* Models */ = {isa = PBXGroup; children = (7297E26C5F5EC06D3C091302 /* FinanceModels.swift */); path = Models; sourceTree = "<group>";};
+		D6C89CC9500E98D4C8A8E98E /* Persistence */ = {isa = PBXGroup; children = (2AF10A1ECD28A370818ED645 /* FinanceRepository.swift */); path = Persistence; sourceTree = "<group>";};
+		A1AF5AD3088A36FFF1D48418 /* Services */ = {isa = PBXGroup; children = (5BB416F83B141102890A70CF /* ExchangeRateService.swift */); path = Services; sourceTree = "<group>";};
+		D76A3D17190E01256A526F32 /* ViewModels */ = {isa = PBXGroup; children = (FB2E4B469FC41E12E1912C84 /* FinanceViewModel.swift */); path = ViewModels; sourceTree = "<group>";};
+		963E4BF6B41052EB0FA620F3 /* DesignSystem */ = {isa = PBXGroup; children = (2EA393E0BB11DABD03876C81 /* BrandTheme.swift */); path = DesignSystem; sourceTree = "<group>";};
+		8A4DFE8310ECB3E42F98B095 /* Screens */ = {isa = PBXGroup; children = (D2602EAC8D17A5BE5F3DB059 /* AboutScreen.swift */, 897DA77E797B83556D4888A8 /* AddMovementScreen.swift */, 02081C4ED41A1B9014D657EA /* GoalsScreen.swift */, 099E0031159C3ABD947D59AE /* HomeScreen.swift */, 97E6F997A56D118B29D76BC6 /* MovementsScreen.swift */, 64DEF791914C28D5867526BF /* ProfileScreen.swift */, 55FD1AAEB6E0F2531F32C92E /* SplashView.swift */); path = Screens; sourceTree = "<group>";};
+		4FDE57E4B72FFCEE306CEB0F /* Products */ = {isa = PBXGroup; children = (829E1A1BB4B18EF221D5B15E /* MiPuenteFinanciero.app */); name = Products; sourceTree = "<group>";};
+/* End PBXGroup section */
+
+/* Begin PBXNativeTarget section */
+		0E8A3AD980EC179856012B7E /* MiPuenteFinanciero */ = {isa = PBXNativeTarget; buildConfigurationList = 12D04EAA9B7F92E20B86C211 /* Build configuration list for PBXNativeTarget */; buildPhases = (72A8017E75795FC05F78F54C /* Sources */, F01580CCB5F725E4E879D491 /* Frameworks */, 963488E8A773A44C9A5DC523 /* Resources */); buildRules = (); dependencies = (); name = MiPuenteFinanciero; productName = MiPuenteFinanciero; productReference = 829E1A1BB4B18EF221D5B15E /* MiPuenteFinanciero.app */; productType = "com.apple.product-type.application";};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		98F54143AB4E86B28C3AFEE0 /* Project object */ = {isa = PBXProject; attributes = {BuildIndependentTargetsInParallel = YES; LastUpgradeCheck = 1500; TargetAttributes = {0E8A3AD980EC179856012B7E = {CreatedOnToolsVersion = 15.0; }; }; }; buildConfigurationList = F081215BB71916C081E9FF1C /* Build configuration list for PBXProject */; compatibilityVersion = "Xcode 14.0"; developmentRegion = es; hasScannedForEncodings = 0; knownRegions = (es, en, Base); mainGroup = BDE88D77EBDC01774960BE71; productRefGroup = 4FDE57E4B72FFCEE306CEB0F /* Products */; projectDirPath = ""; projectRoot = ""; targets = (0E8A3AD980EC179856012B7E /* MiPuenteFinanciero */);};
+/* End PBXProject section */
+
+/* Begin PBXResourcesBuildPhase section */
+		963488E8A773A44C9A5DC523 /* Resources */ = {isa = PBXResourcesBuildPhase; buildActionMask = 2147483647; files = (AB448BACB6278B84EC78240E /* Assets.xcassets in Resources */); runOnlyForDeploymentPostprocessing = 0;};
+/* End PBXResourcesBuildPhase section */
+
+/* Begin PBXSourcesBuildPhase section */
+		72A8017E75795FC05F78F54C /* Sources */ = {isa = PBXSourcesBuildPhase; buildActionMask = 2147483647; files = (8AA0BF6BA97D662E17CC0776 /* MiPuenteFinancieroApp.swift in Sources */, D6D186021F5BF95AF41C4791 /* BrandTheme.swift in Sources */, 2C78F707ADFB567307D8F83D /* FinanceModels.swift in Sources */, DAE63874C9B9C97894C1F75A /* FinanceRepository.swift in Sources */, 60FCE0CA759DD810C9BB7717 /* AboutScreen.swift in Sources */, 6ABEFB3F66B412631DBA6DDE /* AddMovementScreen.swift in Sources */, 28C90CB51E279E5BCB1427CF /* GoalsScreen.swift in Sources */, 3CCEE6584D0AAC41BD317D8E /* HomeScreen.swift in Sources */, FD94C6F0A693AA0757C5837B /* MovementsScreen.swift in Sources */, 18560F6FF8C29A3007C75231 /* ProfileScreen.swift in Sources */, 84A6C31145DDEE206B1BA6FD /* SplashView.swift in Sources */, A6B354569EB669063D0CD0FA /* ExchangeRateService.swift in Sources */, C49FC7AF6D02588C6B7DA312 /* FinanceViewModel.swift in Sources */); runOnlyForDeploymentPostprocessing = 0;};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin XCBuildConfiguration section */
+		32C52D8BB13B0F5C83B20C12 /* Debug Project */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SWIFT_VERSION = 5.0; DEBUG_INFORMATION_FORMAT = dwarf; GCC_OPTIMIZATION_LEVEL = 0; SWIFT_OPTIMIZATION_LEVEL = "-Onone"; }; name = Debug;};
+		06EA4DF09EE2679D648E535C /* Release Project */ = {isa = XCBuildConfiguration; buildSettings = {ALWAYS_SEARCH_USER_PATHS = NO; CLANG_ENABLE_MODULES = YES; CLANG_ENABLE_OBJC_ARC = YES; SDKROOT = iphoneos; IPHONEOS_DEPLOYMENT_TARGET = 17.0; SWIFT_VERSION = 5.0; DEBUG_INFORMATION_FORMAT = "dwarf-with-dsym"; SWIFT_OPTIMIZATION_LEVEL = "-O"; }; name = Release;};
+		F1374D353D4CDC99CC25758F /* Debug Target */ = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Mi Puente Financiero"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance"; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = co.edu.mipuente.swiftui; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; SWIFT_ACTIVE_COMPILATION_CONDITIONS = DEBUG; }; name = Debug;};
+		2E5C41642508F65EB7CADEE6 /* Release Target */ = {isa = XCBuildConfiguration; buildSettings = {ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon; CODE_SIGN_STYLE = Automatic; CURRENT_PROJECT_VERSION = 1; GENERATE_INFOPLIST_FILE = YES; INFOPLIST_KEY_CFBundleDisplayName = "Mi Puente Financiero"; INFOPLIST_KEY_LSApplicationCategoryType = "public.app-category.finance"; INFOPLIST_KEY_UILaunchScreen_Generation = YES; INFOPLIST_KEY_UIApplicationSceneManifest_Generation = YES; IPHONEOS_DEPLOYMENT_TARGET = 17.0; MARKETING_VERSION = 1.0; PRODUCT_BUNDLE_IDENTIFIER = co.edu.mipuente.swiftui; PRODUCT_NAME = "$(TARGET_NAME)"; SDKROOT = iphoneos; SUPPORTED_PLATFORMS = "iphoneos iphonesimulator"; SWIFT_EMIT_LOC_STRINGS = YES; SWIFT_VERSION = 5.0; TARGETED_DEVICE_FAMILY = "1,2"; }; name = Release;};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		F081215BB71916C081E9FF1C /* Project config list */ = {isa = XCConfigurationList; buildConfigurations = (32C52D8BB13B0F5C83B20C12 /* Debug */, 06EA4DF09EE2679D648E535C /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+		12D04EAA9B7F92E20B86C211 /* Target config list */ = {isa = XCConfigurationList; buildConfigurations = (F1374D353D4CDC99CC25758F /* Debug */, 2E5C41642508F65EB7CADEE6 /* Release */); defaultConfigurationIsVisible = 0; defaultConfigurationName = Release;};
+/* End XCConfigurationList section */
+	};
+	rootObject = 98F54143AB4E86B28C3AFEE0 /* Project object */;
+}
