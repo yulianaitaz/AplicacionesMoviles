@@ -2,24 +2,37 @@
 
 import android.app.Application
 import androidx.lifecycle.AndroidViewModel
+import androidx.lifecycle.viewModelScope
 import co.edu.mipuente.data.FinanceRepository
 import co.edu.mipuente.data.remote.ExchangeRateService
 import co.edu.mipuente.ui.model.AccountType
 import co.edu.mipuente.ui.model.FinanceUiState
+import co.edu.mipuente.ui.model.Movement
 import co.edu.mipuente.ui.model.MovementType
+import co.edu.mipuente.ui.model.SavingsGoal
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.util.concurrent.Executors
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
+import co.edu.mipuente.ui.model.ExchangeRateState
 
 class FinanceViewModel(application: Application) : AndroidViewModel(application) {
 
     private val repository = FinanceRepository(application)
-    private val executor = Executors.newSingleThreadExecutor()
 
     private val _uiState = MutableStateFlow(FinanceUiState())
     val uiState: StateFlow<FinanceUiState> = _uiState.asStateFlow()
+
+    private class LocalSnapshot(
+        val movements: List<Movement>,
+        val goals: List<SavingsGoal>,
+        val personal: Long,
+        val business: Long,
+        val notifications: Boolean
+    )
 
     init {
         loadLocalData()
@@ -34,11 +47,11 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
             val notifications = repository.notificationsEnabled()
             _uiState.update {
                 it.copy(
-                    movements = movements,
-                    goals = goals,
-                    personalBalance = personal,
-                    businessBalance = business,
-                    notificationsEnabled = notifications,
+                    movements = data.movements,
+                    goals = data.goals,
+                    personalBalance = data.personal,
+                    businessBalance = data.business,
+                    notificationsEnabled = data.notifications,
                     localDatabaseReady = true
                 )
             }
@@ -103,7 +116,6 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
                 else -> snapshot.categoryDraft
             }
         }
-        val account = snapshot.selectedAccount
 
         executor.execute {
             val movement = repository.insertMovement(
@@ -310,13 +322,8 @@ class FinanceViewModel(application: Application) : AndroidViewModel(application)
                             exchangeRateLoading = false,
                             exchangeRateMessage = "No fue posible actualizar. Verifica la conexión a Internet."
                         )
-                    }
+                    )
                 }
-        }
-    }
-
-    override fun onCleared() {
-        executor.shutdownNow()
-        super.onCleared()
+            }
     }
 }

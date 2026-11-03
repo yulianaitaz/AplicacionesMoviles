@@ -53,6 +53,7 @@ import co.edu.mipuente.ui.theme.IncomeGreen
 import co.edu.mipuente.ui.viewmodel.FinanceViewModel
 import java.text.NumberFormat
 import java.util.Locale
+import co.edu.mipuente.ui.model.ExchangeRateState
 
 @Composable
 fun HomeScreen(
@@ -182,14 +183,11 @@ fun HomeScreen(
         }
 
         item {
-            OnlineRateCard(
-                rate = state.usdCopRate,
-                loading = state.exchangeRateLoading,
-                message = state.exchangeRateMessage,
-                onRefresh = viewModel::refreshExchangeRate
-            )
-        }
-
+              OnlineRateCard(
+              state = state.exchangeRate,
+              onRefresh = viewModel::refreshExchangeRate
+              )
+        } 
         item {
             SectionTitle("Acciones rápidas", "Tus accesos más usados, a un toque")
             Spacer(Modifier.height(10.dp))
@@ -225,15 +223,30 @@ fun HomeScreen(
 
 @Composable
 private fun OnlineRateCard(
-    rate: Double?,
-    loading: Boolean,
-    message: String,
+    state: ExchangeRateState,
     onRefresh: () -> Unit
 ) {
     val formatter = NumberFormat.getNumberInstance(Locale("es", "CO")).apply {
         maximumFractionDigits = 2
         minimumFractionDigits = 2
     }
+    val headline = when (state) {
+        is ExchangeRateState.Success -> "1 USD ≈ ${formatter.format(state.rate)} COP"
+        ExchangeRateState.Loading -> "Consultando…"
+        ExchangeRateState.Idle, is ExchangeRateState.Error -> "Tasa aún no consultada"
+    }
+    val message = when (state) {
+        ExchangeRateState.Idle -> "Toca actualizar para consultar la tasa en línea."
+        ExchangeRateState.Loading -> "Consultando servicio en línea…"
+        is ExchangeRateState.Success -> "Actualizado desde un servicio HTTP público."
+        is ExchangeRateState.Error -> state.message
+    }
+    val messageColor = if (state is ExchangeRateState.Error) {
+        MaterialTheme.colorScheme.error
+    } else {
+        MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.75f)
+    }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(24.dp),
@@ -263,7 +276,7 @@ private fun OnlineRateCard(
                 )
                 Text(message, style = MaterialTheme.typography.bodyMedium, color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.75f))
             }
-            if (loading) {
+            if (state is ExchangeRateState.Loading) {
                 CircularProgressIndicator(modifier = Modifier.size(30.dp), strokeWidth = 3.dp)
             } else {
                 FilledTonalIconButton(onClick = onRefresh) {
