@@ -65,6 +65,14 @@ final class SavingsGoalRecord {
         guard target > 0 else { return 0 }
         return min(1, max(0, Double(saved) / Double(target)))
     }
+
+    var remaining: Int64 {
+        max(0, target - saved)
+    }
+
+    var isCompleted: Bool {
+        saved >= target
+    }
 }
 
 @Model
