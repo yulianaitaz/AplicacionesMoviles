@@ -67,6 +67,10 @@ final class FinanceRepository {
 
     func addMovement(title: String, category: String, amount: Int64, kind: TransactionKind,
                      account: FinanceAccount) throws {
+        let cleanTitle = title.trimmingCharacters(in: .whitespacesAndNewlines)
+        let cleanCategory = category.trimmingCharacters(in: .whitespacesAndNewlines)
+        guard !cleanTitle.isEmpty else { throw FinanceDataError.invalidMovementTitle }
+        guard !cleanCategory.isEmpty else { throw FinanceDataError.invalidMovementCategory }
         guard amount > 0 else { throw FinanceDataError.invalidAmount }
         let current = try balance(for: account)
         let newBalance: Int64
@@ -79,7 +83,7 @@ final class FinanceRepository {
             guard !overflow else { throw FinanceDataError.invalidAmount }
             newBalance = result
         }
-        let movement = FinanceMovement(title: title, category: category, amount: amount, kind: kind, account: account)
+        let movement = FinanceMovement(title: cleanTitle, category: cleanCategory, amount: amount, kind: kind, account: account)
         context.insert(movement)
         try setBalance(newBalance, for: account)
         try context.save()
@@ -146,11 +150,15 @@ final class FinanceRepository {
 enum FinanceDataError: LocalizedError {
     case invalidAmount
     case invalidGoal
+    case invalidMovementTitle
+    case invalidMovementCategory
 
     var errorDescription: String? {
         switch self {
         case .invalidAmount: "El monto debe ser mayor que cero y estar dentro del rango permitido."
         case .invalidGoal: "Escribe un nombre y un objetivo válido para la meta."
+        case .invalidMovementTitle: "El concepto o título del movimiento no puede estar vacío."
+        case .invalidMovementCategory: "La categoría del movimiento no puede estar vacía."
         }
     }
 }
